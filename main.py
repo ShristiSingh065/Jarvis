@@ -3,10 +3,16 @@ import webbrowser
 import time
 import musiclib
 import speech_recognition as sr
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+newsapi = os.getenv("NEWS_API_KEY")
 recognizer=sr.Recognizer()
 import requests
 speaker = win32com.client.Dispatch("SAPI.SpVoice")
-newsapi="371ac7e677c44f55a1318f89de6c8afd"
+
+newsapi = os.getenv("NEWS_API_KEY")
 
 def speak(text):
     speaker.Speak(text)
@@ -22,7 +28,8 @@ def processcommand(c):
         link=musiclib.music[song]
         webbrowser.open(link)
     elif "news" in c.lower():
-        r=requests.get("https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=371ac7e677c44f55a1318f89de6c8afd")
+        r = requests.get(f"https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey={newsapi}"
+)
         if r.status_code==200:
             data=r.json()
             articles=data.get("articles",[])
